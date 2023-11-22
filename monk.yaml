@@ -1,0 +1,30 @@
+namespace: django-rest-framework
+
+django-rest-framework:
+  defines: runnable
+  metadata:
+    name: django-rest-framework
+    description: >-
+      The Django REST Framework library code, providing a powerful and flexible
+      toolkit for building Web APIs in Django projects.
+    icon: https://emojiapi.dev/api/v1/robot.svg
+  containers:
+    django-rest-framework:
+      image: env-1944.registry.local/django-rest-framework:master-1db19f4
+      build: .
+      dockerfile: Dockerfile.django-rest-framework
+  services:
+    default-http:
+      description: Django REST framework default HTTP port.
+      container: django-rest-framework
+      port: 8000
+      host-port: 8000
+      publish: true
+      protocol: tcp
+  connections: {}
+  variables: {}
+
+stack:
+  defines: group
+  members:
+    - django-rest-framework/django-rest-framework

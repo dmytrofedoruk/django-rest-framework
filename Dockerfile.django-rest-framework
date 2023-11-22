@@ -1,0 +1,31 @@
+FROM python:3.9-slim
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# Set the work directory
+WORKDIR /code
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y gcc libpq-dev && rm -rf /var/lib/apt/lists/*
+
+# Upgrade pip
+RUN pip install --upgrade pip
+
+# Install Django REST Framework requirements
+COPY requirements.txt /code/
+COPY requirements/ /code/requirements/
+RUN pip install -r /code/requirements.txt
+
+# Copy the Django REST framework code
+COPY rest_framework/ /code/rest_framework/
+
+# Copy additional necessary files
+COPY runtests.py /code/
+COPY setup.py /code/
+COPY tests/ /code/tests/
+
+EXPOSE 8000
+
+CMD ["python", "/code/runtests.py"]
